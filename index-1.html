@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAST ML Datasets</title>
+<meta name="description" content="Browse and download every dataset in the VAST ML Datasets collection.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0d14;
+    --panel:#121622;
+    --panel-2:#171c2b;
+    --border:#262c3f;
+    --text:#e8eaf0;
+    --muted:#8b93a7;
+    --muted-2:#5b6378;
+    --accent:#e8a33d;
+    --accent-soft:rgba(232,163,61,.14);
+    --good:#5fb98c;
+    --bad:#d9736a;
+    --radius:10px;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --display:"Space Grotesk",var(--sans);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  button{font:inherit;color:inherit;}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- header ---------- */
+  header{border-bottom:1px solid var(--border);padding:36px 0 28px;}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .brand svg{width:26px;height:26px;color:var(--accent);flex:none;}
+  .brand span{font-family:var(--display);font-weight:700;font-size:1.25rem;letter-spacing:-.01em;}
+  header p.lede{color:var(--muted);max-width:52ch;margin:0 0 22px;font-size:.97rem;}
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .search{
+    position:relative;flex:1 1 220px;min-width:180px;
+  }
+  .search svg{
+    position:absolute;left:11px;top:50%;transform:translateY(-50%);
+    width:15px;height:15px;color:var(--muted-2);pointer-events:none;
+  }
+  .search input{
+    width:100%;background:var(--panel);border:1px solid var(--border);
+    color:var(--text);border-radius:var(--radius);padding:9px 12px 9px 32px;
+    font-size:.9rem;font-family:var(--sans);
+  }
+  .search input::placeholder{color:var(--muted-2);}
+  .search input:focus{border-color:var(--accent);}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:7px;
+    border-radius:var(--radius);padding:9px 14px;font-size:.87rem;font-weight:600;
+    border:1px solid var(--border);background:var(--panel);white-space:nowrap;
+    text-decoration:none;cursor:pointer;transition:border-color .15s ease;
+  }
+  .btn svg{width:15px;height:15px;flex:none;}
+  .btn:hover{border-color:var(--muted-2);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#1a1204;}
+  .btn.primary:hover{filter:brightness(1.06);}
+
+  /* ---------- hero stat ---------- */
+  .stat{padding:34px 0 30px;border-bottom:1px solid var(--border);}
+  .stat .num{
+    font-family:var(--display);font-weight:700;font-size:clamp(2.4rem,8vw,3.6rem);
+    letter-spacing:-.02em;color:var(--text);line-height:1;
+  }
+  .stat .cap{color:var(--muted);margin-top:8px;font-size:.92rem;}
+  .stat .cap b{color:var(--text);font-weight:600;}
+
+  /* ---------- about / readme ---------- */
+  .about{padding:30px 0;border-bottom:1px solid var(--border);}
+  .about-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
+  .about-head h2{font-family:var(--display);font-size:1.05rem;font-weight:600;margin:0;}
+  .about-head .btn{padding:6px 11px;font-size:.8rem;}
+  .about-body{
+    color:var(--muted);font-size:.92rem;max-width:70ch;
+  }
+  .about-body :first-child{margin-top:0;}
+  .about-body :last-child{margin-bottom:0;}
+  .about-body h1,.about-body h2,.about-body h3{
+    font-family:var(--display);color:var(--text);font-weight:600;line-height:1.3;
+    margin:1.4em 0 .5em;
+  }
+  .about-body h1{font-size:1.2rem;}
+  .about-body h2{font-size:1.08rem;}
+  .about-body h3{font-size:1rem;}
+  .about-body p,.about-body ul,.about-body ol{margin:0 0 1em;}
+  .about-body ul,.about-body ol{padding-left:1.3em;}
+  .about-body li{margin:.25em 0;}
+  .about-body a{color:var(--accent);text-decoration:underline;text-underline-offset:2px;}
+  .about-body code{
+    font-family:var(--mono);background:var(--panel-2);border:1px solid var(--border);
+    border-radius:4px;padding:.1em .35em;font-size:.85em;color:var(--text);
+  }
+  .about-body pre{
+    background:var(--panel-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:12px 14px;overflow-x:auto;margin:0 0 1em;
+  }
+  .about-body pre code{background:none;border:none;padding:0;}
+  .about-body img{max-width:100%;border-radius:6px;}
+  .about-body blockquote{
+    margin:0 0 1em;padding-left:12px;border-left:2px solid var(--border);color:var(--muted-2);
+  }
+  .about-body table{border-collapse:collapse;margin:0 0 1em;font-size:.88em;}
+  .about-body th,.about-body td{border:1px solid var(--border);padding:5px 9px;text-align:left;}
+
+  /* ---------- states ---------- */
+  .state{padding:60px 0;color:var(--muted);}
+  .state .row{display:flex;align-items:center;gap:10px;font-size:.92rem;}
+  .spinner{
+    width:16px;height:16px;border-radius:50%;
+    border:2px solid var(--border);border-top-color:var(--accent);
+    animation:spin .7s linear infinite;flex:none;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .error-box{
+    border:1px solid var(--bad);background:rgba(217,115,106,.08);
+    border-radius:var(--radius);padding:18px 20px;
+  }
+  .error-box h3{margin:0 0 6px;font-size:.98rem;color:var(--text);}
+  .error-box p{margin:0 0 12px;color:var(--muted);font-size:.9rem;}
+
+  /* ---------- tree ---------- */
+  main{padding:26px 0 60px;}
+  .empty{color:var(--muted-2);font-size:.9rem;padding:20px 0;}
+
+  details.dir{border-bottom:1px solid var(--border);}
+  details.dir[open] > summary .chev{transform:rotate(90deg);}
+  summary.dir-head{
+    list-style:none;cursor:pointer;display:flex;align-items:center;gap:9px;
+    padding:12px 2px;
+  }
+  summary.dir-head::-webkit-details-marker{display:none;}
+  summary.dir-head:hover{color:var(--accent);}
+  summary.dir-head .chev{width:11px;height:11px;color:var(--muted-2);flex:none;transition:transform .12s ease;}
+  summary.dir-head .folder-ic{width:16px;height:16px;color:var(--accent);flex:none;}
+  summary.dir-head .name{font-weight:600;font-size:.92rem;}
+  summary.dir-head .meta{color:var(--muted-2);font-size:.8rem;margin-left:auto;font-family:var(--mono);}
+
+  .dir-body{padding:0 0 6px 25px;border-left:1px solid var(--border);margin-left:8px;}
+
+  .file-row{
+    display:flex;align-items:center;gap:10px;padding:8px 2px;
+    border-top:1px solid var(--border);
+  }
+  .dir-body .file-row:first-child, main > .file-row:first-child{border-top:none;}
+  .file-row .file-ic{width:15px;height:15px;flex:none;color:var(--muted);}
+  .file-row .fname{
+    font-family:var(--mono);font-size:.85rem;overflow:hidden;text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .file-row .fpath{color:var(--muted-2);}
+  .file-row .size{
+    font-family:var(--mono);color:var(--muted-2);font-size:.78rem;
+    margin-left:auto;flex:none;padding-left:10px;
+  }
+  .file-row .dl{
+    flex:none;display:inline-flex;align-items:center;gap:5px;
+    color:var(--muted);text-decoration:none;font-size:.8rem;font-weight:600;
+    padding:5px 8px;border-radius:7px;
+  }
+  .file-row .dl svg{width:13px;height:13px;}
+  .file-row .dl:hover{color:var(--accent);background:var(--accent-soft);}
+
+  footer{border-top:1px solid var(--border);padding:22px 0 40px;color:var(--muted-2);font-size:.8rem;}
+  footer a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;}
+
+  @media (max-width:520px){
+    .file-row .fname{max-width:150px;}
+    .file-row .dl span{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <ellipse cx="12" cy="5.5" rx="8" ry="3"/>
+        <path d="M4 5.5v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/>
+        <path d="M4 11.5v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/>
+      </svg>
+      <span>VAST ML Datasets</span>
+    </div>
+    <p class="lede">A live index of every dataset in this collection, generated straight from GitHub so it never goes stale.</p>
+    <div class="controls">
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Filter datasets by name…" autocomplete="off" disabled>
+      </label>
+      <a id="zipBtn" class="btn primary" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+        Download all (ZIP)
+      </a>
+      <a id="repoBtn" class="btn" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+        Source
+      </a>
+    </div>
+  </header>
+
+  <section class="stat" id="stat" hidden>
+    <div class="num" id="statNum">0</div>
+    <div class="cap" id="statCap"></div>
+  </section>
+
+  <section class="about" id="about" hidden>
+    <div class="about-head">
+      <h2>About</h2>
+      <a id="readmeDl" class="btn" href="#" download rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+        Download README
+      </a>
+    </div>
+    <div class="about-body" id="aboutBody"></div>
+  </section>
+
+  <main id="main">
+    <div class="state">
+      <div class="row"><div class="spinner"></div> Reading the repository from GitHub…</div>
+    </div>
+  </main>
+
+  <footer id="footer" hidden>
+    Files are served directly from GitHub's raw content CDN — nothing is copied or mirrored here.
+    <span id="synced"></span>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var OWNER = "codenest202-lang";
+  var REPO  = "VAST_ML_DATASET";
+
+  var mainEl    = document.getElementById("main");
+  var statEl    = document.getElementById("stat");
+  var statNum   = document.getElementById("statNum");
+  var statCap   = document.getElementById("statCap");
+  var footerEl  = document.getElementById("footer");
+  var syncedEl  = document.getElementById("synced");
+  var searchEl  = document.getElementById("search");
+  var zipBtn    = document.getElementById("zipBtn");
+  var repoBtn   = document.getElementById("repoBtn");
+  var aboutEl   = document.getElementById("about");
+  var aboutBody = document.getElementById("aboutBody");
+  var readmeDl  = document.getElementById("readmeDl");
+
+  var ICONS = {
+    folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>',
+    table:  '<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18"/><path d="M9 4v16"/>',
+    braces: '<path d="M8 4c-2 0-2 2-2 3.5S5 10 4 10.5C5 11 6 12 6 13.5S6 17 8 17"/><path d="M16 4c2 0 2 2 2 3.5S19 10 20 10.5c-1 .5-2 1.5-2 3S18 17 16 17"/>',
+    archive:'<rect x="4" y="4" width="16" height="16" rx="1"/><path d="M9 4v3M12 4v3M15 4v3"/><path d="M9.5 12.5h3v3h-3z"/>',
+    image:  '<rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="8.5" cy="9.5" r="1.4"/><path d="m4 17 5-5 4 4 3-3 4 4"/>',
+    code:   '<path d="m9 7-5 5 5 5"/><path d="m15 7 5 5-5 5"/>',
+    doc:    '<path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 16.5h6"/>',
+    file:   '<path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/>'
+  };
+  var EXT_MAP = {
+    csv:"table", tsv:"table", parquet:"table", xlsx:"table",
+    json:"braces", jsonl:"braces", yaml:"braces", yml:"braces",
+    zip:"archive", tar:"archive", gz:"archive", "7z":"archive", rar:"archive",
+    png:"image", jpg:"image", jpeg:"image", gif:"image", webp:"image", svg:"image",
+    py:"code", ipynb:"code", js:"code", sh:"code",
+    md:"doc", txt:"doc", pdf:"doc"
+  };
+  function iconSvg(kind, cls){
+    return '<svg class="'+cls+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[kind]+'</svg>';
+  }
+  function iconForFile(name){
+    var ext = (name.split(".").pop() || "").toLowerCase();
+    return iconSvg(EXT_MAP[ext] || "file", "file-ic");
+  }
+  function fmtSize(bytes){
+    if (bytes == null) return "";
+    if (bytes < 1024) return bytes + " B";
+    var units = ["KB","MB","GB","TB"], v = bytes;
+    for (var i=0;i<units.length;i++){
+      v = v/1024;
+      if (v < 1024 || i === units.length-1) return v.toFixed(v<10?2:1)+" "+units[i];
+    }
+  }
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  repoBtn.href = "https://github.com/"+OWNER+"/"+REPO;
+
+  var BRANCH = "main";
+  var rawBase = function(path){
+    return "https://raw.githubusercontent.com/"+OWNER+"/"+REPO+"/"+BRANCH+"/"+
+      path.split("/").map(encodeURIComponent).join("/");
+  };
+
+  function b64DecodeUnicode(str){
+    var binary = atob(str.replace(/\n/g, ""));
+    var bytes = new Uint8Array(binary.length);
+    for (var i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder("utf-8").decode(bytes);
+  }
+
+  // Resolve relative links/images against the repo, open external links safely,
+  // and strip anything that could execute (belt-and-braces on top of the fact
+  // that innerHTML never runs injected <script> tags).
+  function sanitizeAndResolve(html){
+    var el = document.createElement("div");
+    el.innerHTML = html;
+    el.querySelectorAll("script").forEach(function(n){ n.remove(); });
+    el.querySelectorAll("*").forEach(function(node){
+      Array.prototype.slice.call(node.attributes).forEach(function(attr){
+        if (/^on/i.test(attr.name)) node.removeAttribute(attr.name);
+      });
+    });
+    el.querySelectorAll("img[src]").forEach(function(img){
+      var src = img.getAttribute("src");
+      if (src && !/^(https?:)?\/\//i.test(src) && !/^data:/i.test(src)){
+        img.setAttribute("src", "https://raw.githubusercontent.com/"+OWNER+"/"+REPO+"/"+BRANCH+"/"+src.replace(/^\.\//,""));
+      }
+    });
+    el.querySelectorAll("a[href]").forEach(function(a){
+      var href = a.getAttribute("href");
+      if (href && !/^(https?:)?\/\//i.test(href) && href.charAt(0) !== "#" && !/^mailto:/i.test(href)){
+        a.setAttribute("href", "https://github.com/"+OWNER+"/"+REPO+"/blob/"+BRANCH+"/"+href.replace(/^\.\//,""));
+      }
+      a.setAttribute("target","_blank");
+      a.setAttribute("rel","noopener");
+    });
+    return el.innerHTML;
+  }
+
+  function showError(title, msg){
+    statEl.hidden = true;
+    mainEl.innerHTML =
+      '<div class="state"><div class="error-box">'+
+        '<h3>'+escapeHtml(title)+'</h3>'+
+        '<p>'+escapeHtml(msg)+'</p>'+
+        '<a class="btn" href="https://github.com/'+OWNER+'/'+REPO+'" target="_blank" rel="noopener">'+
+          iconSvg("code","btn-ic")+' Open the source on GitHub</a>'+
+      '</div></div>';
+  }
+
+  // ---- build a nested tree from flat blob paths ----
+  function buildTree(entries){
+    var root = { children: {} };
+    entries.forEach(function(e){
+      if (e.type !== "blob") return;
+      var parts = e.path.split("/");
+      var node = root;
+      parts.forEach(function(part, i){
+        if (i === parts.length - 1){
+          node.children[part] = { name: part, path: e.path, type: "file", size: e.size };
+        } else {
+          node = node.children[part] || (node.children[part] = { name: part, type: "dir", children: {} });
+        }
+      });
+    });
+    return root;
+  }
+  function countNode(node){
+    var files = 0, size = 0;
+    Object.keys(node.children).forEach(function(k){
+      var c = node.children[k];
+      if (c.type === "file"){ files++; size += (c.size||0); }
+      else { var r = countNode(c); files += r.files; size += r.size; }
+    });
+    return { files: files, size: size };
+  }
+
+  function renderFileRow(node, dirPrefix){
+    var nameHtml = dirPrefix
+      ? '<span class="fpath">'+escapeHtml(dirPrefix)+'/</span>'+escapeHtml(node.name)
+      : escapeHtml(node.name);
+    return '<div class="file-row">'+
+      iconForFile(node.name)+
+      '<span class="fname" title="'+escapeHtml(node.path)+'">'+nameHtml+'</span>'+
+      '<span class="size">'+fmtSize(node.size)+'</span>'+
+      '<a class="dl" href="'+rawBase(node.path)+'" download title="Download '+escapeHtml(node.name)+'">'+
+        '<svg class="dl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>'+
+        '<span>Download</span>'+
+      '</a>'+
+    '</div>';
+  }
+
+  function renderDir(node, depth){
+    var keys = Object.keys(node.children).sort(function(a,b){
+      var da = node.children[a].type === "dir", db = node.children[b].type === "dir";
+      if (da !== db) return da ? -1 : 1;
+      return a.localeCompare(b);
+    });
+    var html = "";
+    keys.forEach(function(key){
+      var child = node.children[key];
+      if (child.type === "file"){
+        html += renderFileRow(child);
+      } else {
+        var stats = countNode(child);
+        html += '<details class="dir"'+(depth < 1 ? " open" : "")+'>'+
+          '<summary class="dir-head">'+
+            '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>'+
+            iconSvg("folder","folder-ic")+
+            '<span class="name">'+escapeHtml(child.name)+'</span>'+
+            '<span class="meta">'+stats.files+' file'+(stats.files===1?"":"s")+', '+fmtSize(stats.size)+'</span>'+
+          '</summary>'+
+          '<div class="dir-body">'+renderDir(child, depth+1)+'</div>'+
+        '</details>';
+      }
+    });
+    return html;
+  }
+
+  function renderFlat(entries, query){
+    var q = query.toLowerCase();
+    var matches = entries.filter(function(e){
+      return e.type === "blob" && e.path.toLowerCase().indexOf(q) !== -1;
+    });
+    if (!matches.length){
+      mainEl.innerHTML = '<div class="empty">No files match "'+escapeHtml(query)+'". Try a different term.</div>';
+      return;
+    }
+    mainEl.innerHTML = matches.map(function(e){
+      var parts = e.path.split("/");
+      var name = parts.pop();
+      var dir = parts.join("/");
+      return renderFileRow({ name:name, path:e.path, size:e.size }, dir);
+    }).join("");
+  }
+
+  // ---- go ----
+  var README_PATH = null;
+
+  function renderReadme(readme){
+    if (!readme || !readme.content) return;
+    try {
+      var md = b64DecodeUnicode(readme.content);
+      var html = sanitizeAndResolve(marked.parse(md));
+      aboutBody.innerHTML = html;
+      readmeDl.href = rawBase(readme.path);
+      README_PATH = readme.path;
+      aboutEl.hidden = false;
+    } catch (e) {
+      // If rendering fails for any reason, just skip the About panel —
+      // the file listing below still works fine without it.
+    }
+  }
+
+  fetch("https://api.github.com/repos/"+OWNER+"/"+REPO)
+    .then(function(r){
+      if (!r.ok) { throw { status:r.status, stage:"repo" }; }
+      return r.json();
+    })
+    .then(function(repoInfo){
+      BRANCH = repoInfo.default_branch || "main";
+      zipBtn.href = "https://github.com/"+OWNER+"/"+REPO+"/archive/refs/heads/"+BRANCH+".zip";
+      return Promise.all([
+        fetch("https://api.github.com/repos/"+OWNER+"/"+REPO+"/git/trees/"+BRANCH+"?recursive=1")
+          .then(function(r){
+            if (!r.ok) { throw { status:r.status, stage:"tree" }; }
+            return r.json();
+          }),
+        fetch("https://api.github.com/repos/"+OWNER+"/"+REPO+"/readme?ref="+BRANCH)
+          .then(function(r){ return r.ok ? r.json() : null; })
+          .catch(function(){ return null; })
+      ]);
+    })
+    .then(function(results){
+      var data = results[0];
+      renderReadme(results[1]);
+
+      // Keep the file browser focused on datasets: drop the page itself and
+      // the README, which is shown separately above.
+      var entries = (data.tree || []).filter(function(e){
+        if (e.type === "blob"){
+          if (e.path.toLowerCase() === "index.html") return false;
+          if (README_PATH && e.path === README_PATH) return false;
+        }
+        return true;
+      });
+      var files = entries.filter(function(e){ return e.type === "blob"; });
+
+      if (!files.length){
+        showError("No files found", "There aren't any downloadable files on the default branch yet.");
+        return;
+      }
+
+      var tree = buildTree(entries);
+      var totals = countNode(tree);
+      var folderCount = entries.filter(function(e){ return e.type === "tree"; }).length;
+
+      statEl.hidden = false;
+      statCap.innerHTML = 'datasets across <b>'+folderCount+'</b> folder'+(folderCount===1?"":"s")+', <b>'+fmtSize(totals.size)+'</b> total';
+      animateCount(statNum, totals.files);
+
+      mainEl.innerHTML = renderDir(tree, 0);
+
+      footerEl.hidden = false;
+      syncedEl.textContent = " Synced " + new Date().toLocaleString() + ".";
+      if (data.truncated) {
+        syncedEl.textContent += " Note: this collection is large enough that GitHub only returned a partial file list.";
+      }
+
+      searchEl.disabled = false;
+      var debounce;
+      searchEl.addEventListener("input", function(){
+        clearTimeout(debounce);
+        debounce = setTimeout(function(){
+          var q = searchEl.value.trim();
+          if (!q) { mainEl.innerHTML = renderDir(tree, 0); return; }
+          renderFlat(entries, q);
+        }, 120);
+      });
+    })
+    .catch(function(err){
+      if (err && err.status === 404){
+        showError("Source not found", "GitHub returned a 404 for this collection. Check that it's public and try reloading.");
+      } else if (err && err.status === 403){
+        showError("GitHub rate-limited this page", "Unauthenticated requests to the GitHub API are capped at 60 per hour per visitor. Wait a bit and reload, or browse the source directly.");
+      } else {
+        showError("Couldn't load the collection", "Something went wrong talking to GitHub's API. Reload the page, or browse the source directly.");
+      }
+    });
+
+  function animateCount(el, target){
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || target === 0){ el.textContent = target; return; }
+    var start = null, duration = 700;
+    function step(ts){
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * target);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+})();
+</script>
+</body>
+</html>
